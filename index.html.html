@@ -1,0 +1,408 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre Half Yearly 5 Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 50%, #feca57 100%);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 1em;
+            opacity: 0.95;
+            margin-bottom: 5px;
+        }
+
+        .exam-title {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 25px;
+            text-align: center;
+            color: white;
+        }
+
+        .exam-title h2 {
+            font-size: 2em;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .exam-title p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card.total {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-card.highest {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .stat-card.average {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .stat-card h3 {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .result-card.rank-1 {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border: 3px solid #f39c12;
+        }
+
+        .result-card.rank-1::before {
+            content: '🏆';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 1.5em;
+        }
+
+        .result-card.rank-2,
+        .result-card.rank-3 {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .result-card.rank-2::before {
+            content: '🥈';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 1.3em;
+        }
+
+        .result-card.rank-3::before {
+            content: '🥉';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 1.3em;
+        }
+
+        .student-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+            flex: 1;
+        }
+
+        .marks {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin-left: 15px;
+        }
+
+        .marks.excellent {
+            color: #27ae60;
+        }
+
+        .marks.good {
+            color: #2980b9;
+        }
+
+        .marks.average {
+            color: #f39c12;
+        }
+
+        .marks.needswork {
+            color: #e74c3c;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.6em;
+            }
+
+            .exam-title h2 {
+                font-size: 1.5em;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card .value {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MOHAMMADIA TUITION CENTRE</h1>
+            <p>[ A WAY TO WISDOM ]</p>
+            <p>Usmanpet 3rd Street, Melvisharam - 632509</p> 
+        </div>
+
+        <div class="exam-title">
+            <h2>📋 PRE HALF YEARLY 5</h2>
+            <p>10th Class Results - 2025</p>
+        </div>
+
+        <div class="content">
+            <div class="stats-cards">
+                <div class="stat-card total">
+                    <h3>Total Students Present</h3> 
+                    <div class="value">25</div>
+                </div>
+                <div class="stat-card highest">
+                    <h3>Highest Score</h3>
+                    <div class="value">20/25</div>
+                </div>
+               
+            </div>
+
+            <h3 class="section-title">🌟 Student Performance</h3>
+
+            <div class="results-grid">
+                <div class="result-card rank-1">
+                    <span class="student-name">Muthahar</span>
+                    <span class="marks excellent">20/25</span>
+                </div>
+                <div class="result-card rank-1">
+                    <span class="student-name">Rahamathullah</span>
+                    <span class="marks excellent">20/25</span>
+                </div>
+                <div class="result-card rank-1">
+                    <span class="student-name">Kashif Rasheed</span>
+                    <span class="marks excellent">20/25</span>
+                </div>
+                <div class="result-card rank-2">
+                    <span class="student-name">S Umair Rasheed</span>
+                    <span class="marks excellent">19/25</span>
+                </div>
+                <div class="result-card rank-2">
+                    <span class="student-name">Shahid</span>
+                    <span class="marks excellent">19/25</span>
+                </div>
+                <div class="result-card rank-3">
+                    <span class="student-name">Waseem</span>
+                    <span class="marks excellent">18/25</span>
+                </div>
+                <div class="result-card rank-3">
+                    <span class="student-name">Syed Akram</span>
+                    <span class="marks excellent">18/25</span>
+                </div>
+                <div class="result-card rank-3">
+                    <span class="student-name">Fouzan</span>
+                    <span class="marks excellent">18/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Ammar</span>
+                    <span class="marks good">17/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Abu Ubaidah</span>
+                    <span class="marks good">16/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Taqi</span>
+                    <span class="marks good">15/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Munawwar Hussain</span>
+                    <span class="marks good">15/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Faazil Ahmed</span>
+                    <span class="marks average">13/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">A.Md.Fayaz</span>
+                    <span class="marks average">13/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Abubacker</span>
+                    <span class="marks average">12/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Aathif</span>
+                    <span class="marks average">11/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Hanzallah</span>
+                    <span class="marks average">10/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Izhan</span>
+                    <span class="marks average">10/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Arhamfahd</span>
+                    <span class="marks average">10/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">H.Akram</span>
+                    <span class="marks needswork">09/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Mubarak Ali</span>
+                    <span class="marks needswork">08/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">H.Maaz</span>
+                    <span class="marks needswork">07/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Tanzeem</span>
+                    <span class="marks needswork">06/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">A.S.Md Shauib</span>
+                    <span class="marks needswork">06/25</span>
+                </div>
+                <div class="result-card">
+                    <span class="student-name">Shees</span>
+                    <span class="marks needswork">05/25</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🎯 <strong>Keep up the great work!</strong> Success comes through consistent effort.</p>
+            <p style="margin-top: 10px;">📞 Contact: Usmanpet 3rd Street, Melvisharam </p> 
+        </div>
+    </div>
+</body>
+</html>
