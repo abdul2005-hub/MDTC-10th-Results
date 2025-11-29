@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maths Pre Half Yearly Results 5</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 50%, #feca57 100%);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 1em;
+            opacity: 0.95;
+            margin-bottom: 5px;
+        }
+
+        .exam-title {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 25px;
+            text-align: center;
+            color: white;
+        }
+
+        .exam-title h2 {
+            font-size: 2em;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .exam-title p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card.total {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .stat-card.passed {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+
+        .stat-card.failed {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+
+        .stat-card.highest {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .stat-card.average {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .stat-card h3 {
+            font-size: 0.85em;
+            margin-bottom: 10px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card .value {
+            font-size: 2.2em;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .pass-info {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+            border-left: 5px solid #f39c12;
+        }
+
+        .pass-info p {
+            color: #2c3e50;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .result-card {
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .result-card.passed {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            border-left: 5px solid #27ae60;
+        }
+
+        .result-card.failed {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 5px solid #e74c3c;
+        }
+
+        .result-card.rank-1 {
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border: 3px solid #f39c12;
+        }
+
+        .result-card.rank-1::before {
+            content: '🏆';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 1.5em;
+        }
+
+        .result-card.zero {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            border-left: 5px solid #c0392b;
+        }
+
+        .result-card.zero::after {
+            content: '⚠️';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 1.3em;
+        }
+
+        .student-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+            flex: 1;
+        }
+
+        .marks {
+            font-size: 1.4em;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin-left: 15px;
+        }
+
+        .marks.pass {
+            color: #27ae60;
+        }
+
+        .marks.fail {
+            color: #e74c3c;
+        }
+
+        .status-badge {
+            position: absolute;
+            top: -2px;
+            right: 60px;
+            font-size: 0.7em;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-badge.pass {
+            background: #27ae60;
+            color: white;
+        }
+
+        .status-badge.fail {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin: 30px 0 20px 0;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .section-title.pass-section {
+            color: #27ae60;
+        }
+
+        .section-title.fail-section {
+            color: #e74c3c;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 25px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer-message {
+            color: #2c3e50;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .footer-warning {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%);
+            padding: 15px;
+            border-radius: 10px;
+            color: #c0392b;
+            font-weight: 600;
+            margin-top: 15px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .footer p {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.6em;
+            }
+
+            .exam-title h2 {
+                font-size: 1.5em;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card .value {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MOHAMMADIA TUITION CENTRE</h1>
+            <p>[ A WAY TO WISDOM ]</p>
+            <p>Usmanpet 3rd Street, Melvisharam - 632509</p>
+        </div>
+
+        <div class="exam-title">
+            <h2>📐 MATHS PRE HALF YEARLY EXAM</h2>
+            <p>10th Class Results - 2025</p>
+            <p style="font-size: 0.95em; margin-top: 5px;">Chapters 6 & 8 | Total Marks: 70</p>
+        </div>
+
+        <div class="content">
+            <div class="pass-info">
+                <p>✅ Pass Mark: 15/70 | ❌ Below 15: Failed</p>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card total">
+                    <h3>Total Students</h3>
+                    <div class="value">17</div>
+                </div>
+                <div class="stat-card passed">
+                    <h3>Passed</h3>
+                    <div class="value">4</div>
+                </div>
+                <div class="stat-card failed">
+                    <h3>Failed</h3>
+                    <div class="value">13</div>
+                </div>
+                <div class="stat-card highest">
+                    <h3>Highest</h3>
+                    <div class="value">19/70</div>
+                </div>
+                <div class="stat-card average">
+                    <h3>Average</h3>
+                    <div class="value">8.9</div>
+                </div>
+            </div>
+
+            <!-- Passed Students -->
+            <h3 class="section-title pass-section">✅ Passed Students (4)</h3>
+            <div class="results-grid">
+                <div class="result-card passed rank-1">
+                    <span class="student-name">Muthahar</span>
+                    <span class="marks pass">19/70</span>
+                </div>
+                <div class="result-card passed">
+                    <span class="student-name">Izhaan</span>
+                    <span class="marks pass">17/70</span>
+                </div>
+                <div class="result-card passed">
+                    <span class="student-name">Waseem</span>
+                    <span class="marks pass">17/70</span>
+                </div>
+                <div class="result-card passed">
+                    <span class="student-name">Thaqi</span>
+                    <span class="marks pass">17/70</span>
+                </div>
+            </div>
+
+            <!-- Failed Students -->
+            <h3 class="section-title fail-section">❌ Failed Students (13)</h3>
+            <div class="results-grid">
+                <div class="result-card failed">
+                    <span class="student-name">Syed Akram</span>
+                    <span class="marks fail">16/70</span>
+                </div>
+                <div class="result-card failed">
+                    <span class="student-name">Faazil</span>
+                    <span class="marks fail">16/70</span>
+                </div>
+                <div class="result-card failed">
+                    <span class="student-name">Umair Rasheed</span>
+                    <span class="marks fail">11/70</span>
+                </div>
+                <div class="result-card failed">
+                    <span class="student-name">Ammar</span>
+                    <span class="marks fail">09/70</span>
+                </div>
+                <div class="result-card failed">
+                    <span class="student-name">Alqama</span>
+                    <span class="marks fail">09/70</span>
+                </div>
+                <div class="result-card failed">
+                    <span class="student-name">Abubacker</span>
+                    <span class="marks fail">08/70</span>
+                </div>
+                <div class="result-card failed">
+                    <span class="student-name">Shahid</span>
+                    <span class="marks fail">06/70</span>
+                </div>
+                <div class="result-card failed">
+                    <span class="student-name">Abu Ubaidah</span>
+                    <span class="marks fail">05/70</span>
+                </div>
+                <div class="result-card failed">
+                    <span class="student-name">Maaz</span>
+                    <span class="marks fail">04/70</span>
+                </div>
+                <div class="result-card failed">
+                    <span class="student-name">Shees</span>
+                    <span class="marks fail">02/70</span>
+                </div>
+                <div class="result-card failed">
+                    <span class="student-name">Mubarak Ali</span>
+                    <span class="marks fail">02/70</span>
+                </div>
+                <div class="result-card failed">
+                    <span class="student-name">Arham Fahd</span>
+                    <span class="marks fail">02/70</span>
+                </div>
+                <div class="result-card failed zero">
+                    <span class="student-name">Tanzeem</span>
+                    <span class="marks fail">0/70</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-message">
+                📊 Overall Performance: Needs Serious Improvement
+            </div>
+            <div class="footer-warning">
+                ⚠️ 13 out of 17 students failed! This is a wake-up call. Maths requires practice, not just last-minute preparation.
+            </div>
+            <p style="margin-top: 20px; color: #2c3e50; font-size: 1em;">
+                <strong>Message to Failed Students:</strong> This is NOT the end. Work harder, practice more problems, and attend extra classes if needed. Chapter 6 & 8 are fundamental - master them!
+            </p>
+            <p style="margin-top: 15px; color: #27ae60; font-size: 1em;">
+                <strong>Congratulations to Passed Students!</strong> Keep up the momentum, but there's still room for improvement. Aim for 50+ next time!
+            </p>
+            <p style="margin-top: 20px;">📞 Contact: Usmanpet 3rd Street, Melvisharam</p>
+        </div>
+    </div>
+</body>
+</html>
